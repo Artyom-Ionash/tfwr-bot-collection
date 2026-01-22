@@ -156,12 +156,7 @@ class Items:
 
 # Группируем их в один тип для удобства аргументов функций
 ItemType: TypeAlias = Literal[
-    "Water",
-    "Wood",
-    "Hay",
-    "Power",
-    "Cactus",
-    "Pumpkin",
+    "Water", "Wood", "Hay", "Power", "Cactus", "Pumpkin", "Fertilizer"
 ]
 
 class Entities:
