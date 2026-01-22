@@ -37,9 +37,10 @@ class NoneType:
 
 # Числа
 class int:
-    def __add__(self, other: object) -> int: ...
-    def __sub__(self, other: object) -> int: ...
-    def __mul__(self, other: object) -> int: ...
+    def __add__(self, other: int) -> int: ...
+    def __sub__(self, other: int) -> int: ...
+    def __mul__(self, other: int) -> int: ...
+    def __pow__(self, other: int) -> int: ...
     def __truediv__(self, other: object) -> float: ...
     def __floordiv__(self, other: object) -> int: ...
     def __mod__(self, other: object) -> int: ...
@@ -153,10 +154,18 @@ class Items:
     Pumpkin: Literal["Pumpkin"]
     Carrot: Literal["Carrot"]
     Fertilizer: Literal["Fertilizer"]
+    Weird_Substance: Literal["Weird_Substance"]
 
 # Группируем их в один тип для удобства аргументов функций
 ItemType: TypeAlias = Literal[
-    "Water", "Wood", "Hay", "Power", "Cactus", "Pumpkin", "Fertilizer"
+    "Water",
+    "Wood",
+    "Hay",
+    "Power",
+    "Cactus",
+    "Pumpkin",
+    "Fertilizer",
+    "Weird_Substance",
 ]
 
 class Entities:
@@ -194,6 +203,11 @@ class Hats:
     Dinosaur_Hat: Literal["Dinosaur_Hat"]
 
 HatType: TypeAlias = Literal["Brown_Hat", "Dinosaur_Hat"]
+
+class Unlocks:
+    Mazes: Literal["Mazes"]
+
+UnlocksType: TypeAlias = Literal["Mazes"]
 
 # Функции игры
 def can_harvest() -> bool:
@@ -488,6 +502,23 @@ def num_items(i: ItemType) -> int:
     """
     ...
 
+def num_unlocked(thing: EntityType | ItemType | UnlocksType) -> int:
+    """
+    Используется для проверки, разблокированы ли технология, объект-сущность, земля, предмет или шляпа.
+
+    Возвращает 1 плюс количество выполненных улучшений вещи `thing`, если её можно улучшать. В противном случае возвращает 1, если `thing` разблокирована, 0 — если нет.
+
+    Выполнение занимает 1 тик.
+
+    Пример:
+    ```
+    plant(Entities.Bush)
+    n_substance = get_world_size() * num_unlocked(Unlocks.Mazes)
+    use_item(Items.Weird_Substance, n_substance)
+    ```
+    """
+    ...
+
 def plant(e: EntityType) -> None:
     """
     Сажает указанный объект-сущность entity под дроном, потратив ресурсы.
@@ -568,7 +599,7 @@ def till() -> None:
 
     ...
 
-def use_item(item: ItemType) -> None:
+def use_item(item: ItemType, n=1) -> None:
     """
     Пытается использовать указанный предмет item n раз. Можно использовать только с некоторыми предметами, включая `Items.Water` и `Items.Fertilizer`.
 
