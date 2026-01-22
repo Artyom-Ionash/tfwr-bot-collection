@@ -12,6 +12,7 @@ from typing import (
     Dict,
     TypeGuard,
     Any,
+    Callable,
 )
 
 def is_int(val: Any) -> TypeGuard[int]:
@@ -596,7 +597,28 @@ def till() -> None:
     till()
     ```
     """
+    ...
 
+def spawn_drone(filename: Callable):
+    """
+    На той же позиции, где дрон выполнил команду `spawn_drone(function)`, создает новый дрон. Он начинает выполнять указанную функцию и по завершении автоматически пропадает.
+
+    Возвращает идентификатор нового дрона или `None`, если все дроны уже созданы.
+
+    Выполнение занимает 200 тиков, если дрон был создан, в противном случае — 1.
+
+    Пример:
+    ```
+    def harvest_column():
+        for _ in range(get_world_size()):
+            harvest()
+            move(North)
+
+    while True:
+        if spawn_drone(harvest_column):
+            move(East)
+    ```
+    """
     ...
 
 def use_item(item: ItemType, n=1) -> None:

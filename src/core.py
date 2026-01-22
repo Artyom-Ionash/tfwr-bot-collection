@@ -1,5 +1,5 @@
+# type: (int, int) -> None
 def move_to(t_x, t_y):
-    # type: (int, int) -> None
     if get_pos_x() == t_x and get_pos_y() == t_y:
         return
 
@@ -13,9 +13,30 @@ def move_to(t_x, t_y):
         move(South)
 
 
-def generate_closed_path(w, h):
-    # type: (int, int) -> list[tuple[int, int]]
+# type: (Direction) -> Direction
+def get_opposite_dir(d):
+    if d == North:
+        return South
+    if d == East:
+        return West
+    if d == South:
+        return North
+    return East
 
+
+# type: (int, int, int, int) -> int
+def get_dist(x1, y1, x2, y2):
+    dx = x1 - x2
+    dy = y1 - y2
+    if dx < 0:
+        dx = -dx
+    if dy < 0:
+        dy = -dy
+    return dx + dy
+
+
+# type: (int, int) -> list[tuple[int, int]]
+def generate_closed_path(w, h):
     path = []  # type: list[tuple[int, int]]
 
     # 1. Верхняя строка (слева направо)
@@ -55,8 +76,8 @@ def await_harvest():
 SOIL_PLANTS = {Entities.Carrot, Entities.Pumpkin, Entities.Sunflower, Entities.Cactus}
 
 
+# type: (EntityType) -> None
 def safe_plant(entity):
-    # type: (EntityType) -> None
     if get_entity_type() == entity:
         return
 
@@ -75,8 +96,8 @@ def safe_plant(entity):
     plant(entity)
 
 
+# type: (Direction | None) -> int
 def measure_sunflower(d=None):
-    # type: (Direction | None) -> int
     m = measure(d)
     if m * 0 == 0:
         return m
@@ -104,5 +125,16 @@ def measure_dinosaur():
         return m
 
     print("Яблоко не обнаружено. Проверьте шапку.")
+    while True:
+        pass
+
+
+def measure_treasure():
+    # type: () -> Vector2 | None
+    m = measure()
+    if m == None or len(m) == 2:
+        return m
+
+    print("Сокровище не обнаружено. Проверьте наличие лабиринта.")
     while True:
         pass

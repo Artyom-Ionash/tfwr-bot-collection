@@ -1,4 +1,4 @@
-from core import move_to, generate_closed_path, await_harvest
+from core import move_to
 
 # Направления для обхода
 DIRS = [North, East, South, West]
@@ -11,11 +11,11 @@ OPPOSITES = {
 }  # type: dict[Direction, Direction]
 
 
-# type: () -> None
 def create_maze():
+    # type: () -> None
     # 1. Подготовка куста
     if get_entity_type() != Entities.Bush:
-        if get_entity_type() is not None:
+        if get_entity_type() != None:
             harvest()
         plant(Entities.Bush)
 
@@ -28,8 +28,8 @@ def create_maze():
     use_item(Items.Weird_Substance, substance_amount)
 
 
-# type: () -> None
 def solve_maze():
+    # type: () -> None
     visited = set()  # type: set[tuple[int, int]]
     path_stack = []  # type: list[Direction]
 
@@ -77,12 +77,11 @@ def solve_maze():
     harvest()
 
 
-# type: () -> None
 def run():
+    # type: () -> None
     while True:
-        # Перемещаемся в точку старта (0,0), чтобы строить лабиринт всегда там
-        # (Или в любую удобную свободную точку)
-        move_to(0, 0)
+        w_size = get_world_size()
+        move_to(w_size // 2, w_size // 2)
 
         if (
             get_entity_type() != Entities.Treasure
