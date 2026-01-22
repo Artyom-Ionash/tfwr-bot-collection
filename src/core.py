@@ -48,11 +48,11 @@ def await_harvest():
     # Режим "Турбо-кемпинг"
     # Ждем созревания, удерживая воду на максимуме
     while not can_harvest():
-        quick_print("x5 Рост...")  # Можно раскомментировать для отладки
+        quick_print("Ожидание...")  # Можно раскомментировать для отладки
     harvest()
 
 
-SOIL_PLANTS = {Entities.Carrot, Entities.Pumpkin}
+SOIL_PLANTS = {Entities.Carrot, Entities.Pumpkin, Entities.Sunflower, Entities.Cactus}
 
 
 def safe_plant(entity):
@@ -73,3 +73,36 @@ def safe_plant(entity):
             till()
 
     plant(entity)
+
+
+def measure_sunflower(d=None):
+    # type: (Direction | None) -> int
+    m = measure(d)
+    if m * 0 == 0:
+        return m
+
+    print("Не удалось оценить подсолнух. Проверьте шапку.")
+    while True:
+        pass
+
+
+def measure_cactus(d=None):
+    # type: (Direction | None) -> int
+    m = measure(d)
+    if m * 0 == 0:
+        return m
+
+    print("Не удалось оценить кактус. Проверьте шапку.")
+    while True:
+        pass
+
+
+def measure_dinosaur():
+    # type: () -> Vector2
+    m = measure()
+    if m * 0 == ():
+        return m
+
+    print("Яблоко не обнаружено. Проверьте шапку.")
+    while True:
+        pass

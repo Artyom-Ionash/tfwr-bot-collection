@@ -1,3 +1,12 @@
+from core import (
+    move_to,
+    generate_closed_path,
+    await_harvest,
+    measure_dinosaur,
+    safe_plant,
+)
+
+
 def main():
     while True:
         # 1. Подготовка
@@ -21,11 +30,11 @@ def run_smart_snake():
     # Добавляем небольшой буфер (+2), чтобы не рисковать при лагах
     snake_len = 3
 
-    target_pos = measure()
+    target_pos = measure_dinosaur()
 
     while True:
         # Следим за яблоком
-        new_target = measure()
+        new_target = measure_dinosaur()
         if new_target != target_pos:
             snake_len += 1
             target_pos = new_target

@@ -1,35 +1,4 @@
-clear()
-
-# ====================================================================
-# [CORE] - НАВИГАЦИЯ И ПОДГОТОВКА
-# ====================================================================
-
-
-def core_move(tx, ty):
-    while get_pos_x() < tx:
-        move(East)
-    while get_pos_x() > tx:
-        move(West)
-    while get_pos_y() < ty:
-        move(North)
-    while get_pos_y() > ty:
-        move(South)
-
-
-def core_safe_plant(entity):
-    # Выбор типа почвы
-    target_ground = Grounds.Soil
-    if entity == Entities.Tree or entity == Entities.Grass:
-        target_ground = Grounds.Grassland
-
-    if get_ground_type() != target_ground:
-        till()
-
-    if get_entity_type() != entity:
-        if can_harvest():
-            harvest()
-        plant(entity)
-
+from core import move_to, generate_closed_path, await_harvest, safe_plant
 
 # ====================================================================
 # [STRATEGY] - ИНИЦИАЛИЗАЦИЯ И ПОДДЕРЖКА
@@ -40,11 +9,11 @@ def fill_all_field(size):
     # Первый проход: засаживаем всё поле базово
     for x in range(size):
         for y in range(size):
-            core_move(x, y)
+            move_to(x, y)
             if (x + y) % 2 == 0:
-                core_safe_plant(Entities.Tree)
+                safe_plant(Entities.Tree)
             else:
-                core_safe_plant(Entities.Grass)
+                safe_plant(Entities.Grass)
 
 
 def manage_companions():
@@ -61,11 +30,11 @@ def manage_companions():
         old_y = get_pos_y()
 
         # Летим сажать компаньона
-        core_move(c_x, c_y)
-        core_safe_plant(c_type)
+        move_to(c_x, c_y)
+        safe_plant(c_type)
 
         # Возвращаемся обратно к дереву
-        core_move(old_x, old_y)
+        move_to(old_x, old_y)
 
 
 # ====================================================================
@@ -83,16 +52,16 @@ while True:
         for y in range(size):
             # Работаем только с клетками деревьев (шахматка)
             if (x + y) % 2 == 0:
-                core_move(x, y)
+                move_to(x, y)
 
                 # Если дерево созрело - собираем
                 if can_harvest():
                     harvest()
-                    core_safe_plant(Entities.Tree)
+                    safe_plant(Entities.Tree)
 
                 # Если дерева нет (пусто) - сажаем
                 if get_entity_type() == None:
-                    core_safe_plant(Entities.Tree)
+                    safe_plant(Entities.Tree)
 
                 # Проверяем/обновляем компаньона для этой клетки
                 manage_companions()

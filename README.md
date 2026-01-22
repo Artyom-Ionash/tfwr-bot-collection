@@ -13,7 +13,7 @@
 
 - 🎃 **Smart Strategies** — Адаптивные алгоритмы для Тыкв, Деревьев, Динозавров и Подсолнухов.
 - 🧭 **Robust Navigation** — Умная маршрутизация дрона ("гамильтонов цикл").
-- 🧩 **Modular Core** — Единое ядро (`core.py`) с переиспользуемыми примитивами (Navigation, Inventory, Actions).
+- 🧩 **Modular Core** — Ядро (`core.py`) с переиспользуемыми примитивами.
 - 🛠 **Type Safe** — Частичная поддержка IntelliSense и проверки типов в VS Code благодаря системе Mocking.
 
 ## 🛠 Технические особенности
@@ -28,7 +28,7 @@
 
 Мы стремимся к чистой архитектуре. Подробности разнесены по файлам:
 
-- [🏛 Архитектура (ARCHITECTURE.md)](./docs/ARCHITECTURE.md) — Принципы разделения ядра и стратегий, работа с Mock-окружением.
+- [🏛 Архитектура (ARCHITECTURE.md)](./docs/ARCHITECTURE.md) — Принципы разделения кода, работа с Mock-окружением.
 - [📉 Технический долг (TECH_DEBT.md)](./docs/TECH_DEBT.md) — Известные ограничения (Grid Logic, Monolith Core) и Roadmap.
 
 ## 🚀 Начало работы
@@ -37,11 +37,11 @@
 
 1.  VS Code с расширением **Python (Pylance)**.
 
-### Установка окружения
+### Установка
 
 ```bash
 # Клонирование репозитория
-git clone https://github.com/your-repo/farmer-bot.git
+git clone https://github.com/Artyom-Ionash/tfwr-bot-collection.git
 ```
 
 ### Разработка

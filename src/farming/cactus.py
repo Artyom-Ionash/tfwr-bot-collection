@@ -1,30 +1,10 @@
-clear()
-
-# ====================================================================
-# [CORE] - НАВИГАЦИЯ И ПОДГОТОВКА
-# ====================================================================
-
-
-def core_move(tx, ty):
-    while get_pos_x() < tx:
-        move(East)
-    while get_pos_x() > tx:
-        move(West)
-    while get_pos_y() < ty:
-        move(North)
-    while get_pos_y() > ty:
-        move(South)
-
-
-def core_safe_plant(entity):
-    # Кактусы растут только на грядках:
-    if get_ground_type() != Grounds.Soil:
-        till()
-
-    if get_entity_type() != entity:
-        if can_harvest():
-            harvest()
-        plant(entity)
+from core import (
+    move_to,
+    generate_closed_path,
+    await_harvest,
+    measure_cactus,
+    safe_plant,
+)
 
 
 # ====================================================================
@@ -40,19 +20,19 @@ def prepare_field(size):
             if y % 2 != 0:
                 target_x = size - 1 - x
 
-            core_move(target_x, y)
+            move_to(target_x, y)
 
             if get_entity_type() != Entities.Cactus:
-                core_safe_plant(Entities.Cactus)
+                safe_plant(Entities.Cactus)
 
                 # Активация поликультуры для ускорения роста:
                 comp_data = get_companion()
                 if comp_data != None:
                     c_type, c_pos = comp_data
                     home_x, home_y = get_pos_x(), get_pos_y()
-                    core_move(c_pos[0], c_pos[1])
-                    core_safe_plant(c_type)
-                    core_move(home_x, home_y)
+                    move_to(c_pos[0], c_pos[1])
+                    safe_plant(c_type)
+                    move_to(home_x, home_y)
 
 
 # ====================================================================
@@ -75,18 +55,18 @@ def sort_cactus_matrix(size):
             if y % 2 != 0:
                 x = size - 1 - x
 
-            core_move(x, y)
+            move_to(x, y)
 
             # Проверка соседа справа (East):
             if x < size - 1:
-                if measure() > measure(East):
+                if measure_cactus() > measure_cactus(East):
                     swap(East)
                     swapped = True
                     last_swap_index = i
 
             # Проверка соседа сверху (North):
             if y < size - 1:
-                if measure() > measure(North):
+                if measure_cactus() > measure_cactus(North):
                     swap(North)
                     swapped = True
                     last_swap_index = i
@@ -114,10 +94,10 @@ while True:
     while not ready:
         ready = True
         for i in range(size * size):
-            core_move(i % size, i // size)
+            move_to(i % size, i // size)
             # Если не кактус или еще не вырос:
             if get_entity_type() != Entities.Cactus:
-                core_safe_plant(Entities.Cactus)
+                safe_plant(Entities.Cactus)
                 ready = False
             elif not can_harvest():
                 ready = False
@@ -126,5 +106,5 @@ while True:
     sort_cactus_matrix(size)
 
     # 4. Рекурсивный сбор (дает n^2 кактусов):
-    core_move(0, 0)
+    move_to(0, 0)
     harvest()
